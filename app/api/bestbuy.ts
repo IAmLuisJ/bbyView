@@ -1,7 +1,7 @@
 
 export const baseURL = "https://api.bestbuy.com/v1/products";
 
-export const Key = "EDq54Li1Ts2FSAorlXkOw5JJ";
+export const Key = process.env.API_KEY;
 
 export function createURLfromSKU(SKU: string | undefined, format: string = "json") {
     let url = baseURL + "/" + SKU + "." + format + "?" + "apiKey=" + Key;
