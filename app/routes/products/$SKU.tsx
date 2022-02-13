@@ -3,7 +3,7 @@ import type { LoaderFunction } from "remix";
 import { createURLfromSKU } from "~/api/bestbuy";
 export const loader: LoaderFunction = async ({ params }) => {
     //pull SKU and load data
-    //let url = "https://api.bestbuy.com/v1/products/" + params.SKU + ".json?apiKey=EDq54Li1Ts2FSAorlXkOw5JJ";
+    //let url = "https://api.bestbuy.com/v1/products/" + params.SKU + ".json?apiKey=XXX";
     const url = createURLfromSKU(params.SKU);
     let response = await fetch(url);
     return await response.json();
