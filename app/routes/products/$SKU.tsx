@@ -1,4 +1,4 @@
-import { useLoaderData } from "remix"
+import { useCatch, useLoaderData } from "remix"
 import type { LoaderFunction } from "remix";
 import { createURLfromSKU } from "~/api/bestbuy";
 export const loader: LoaderFunction = async ({ params }) => {
@@ -6,6 +6,12 @@ export const loader: LoaderFunction = async ({ params }) => {
     //let url = "https://api.bestbuy.com/v1/products/" + params.SKU + ".json?apiKey=XXX";
     const url = createURLfromSKU(params.SKU);
     let response = await fetch(url);
+    if(response.status === 404) {
+        throw new Response("Product not found", {status: 404});
+    }
+    // if(response.errorCode === 403) {
+    //     throw new Response("Missing API Key", {status: 404});
+    // }
     return await response.json();
 }
 
@@ -23,4 +29,15 @@ export default function SKU() {
             {renderInfo}
         </div>
     </div>)
+}
+
+//Catchboundary won't work because the API still returns a valid 200 response. Need to throw a response in the loader
+export function CatchBoundary() {
+    const caught = useCatch();
+    if (caught.status === 404) {
+        return (<div className="error-containter">
+            Sorry, we could not find that SKU
+        </div>)
+    }
+    throw new Error(`Unhandled error`);
 }
